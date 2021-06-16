@@ -107,6 +107,9 @@ class FlutterArkitView: NSObject, FlutterPlatformView {
         case "snapshot":
             onGetSnapshot(result)
             break
+        case "getViewportSize":
+            onGetViewportSize(result)
+            break
         default:
             result(FlutterMethodNotImplemented)
             break

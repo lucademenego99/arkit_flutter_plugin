@@ -721,4 +721,10 @@ class ARKitController {
         as FutureOr<Uint8List>);
     return MemoryImage(result);
   }
+
+  Future<List<double>> getViewportSize() async {
+    final result = await (_channel.invokeMethod<Uint8List>('getViewportSize')
+        as FutureOr<List<double>>);
+    return result.toList();
+  }
 }
