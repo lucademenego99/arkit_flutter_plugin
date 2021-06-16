@@ -255,10 +255,6 @@ extension FlutterArkitView {
     }
 
     func onGetViewportSize(_ result:FlutterResult) {
-        let size = [Double]()
-        result.append(sceneView.bounds.size.width)
-        result.append(sceneView.bounds.size.height)
-        let result = serializeArray(size)
-        result(result)
+        result([sceneView.bounds.size.width, sceneView.bounds.size.height])
     }
 }
