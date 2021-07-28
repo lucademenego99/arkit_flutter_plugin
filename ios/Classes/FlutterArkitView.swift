@@ -10,6 +10,7 @@ class FlutterArkitView: NSObject, FlutterPlatformView {
     
     init(withFrame frame: CGRect, viewIdentifier viewId: Int64, messenger msg: FlutterBinaryMessenger) {
         self.sceneView = ARSCNView(frame: frame)
+        self.sceneView.preferredFramesPerSecond = 30    // Test to limit fps
         self.channel = FlutterMethodChannel(name: "arkit_\(viewId)", binaryMessenger: msg)
         
         super.init()
