@@ -10,7 +10,7 @@ class FlutterArkitView: NSObject, FlutterPlatformView {
     
     init(withFrame frame: CGRect, viewIdentifier viewId: Int64, messenger msg: FlutterBinaryMessenger) {
         self.sceneView = ARSCNView(frame: frame)
-        self.sceneView.preferredFramesPerSecond = 30    // Test to limit fps
+        self.sceneView.preferredFramesPerSecond = 30    // Limit FPS to 30: there are heat problems with 60
         self.channel = FlutterMethodChannel(name: "arkit_\(viewId)", binaryMessenger: msg)
         
         super.init()
@@ -74,8 +74,7 @@ class FlutterArkitView: NSObject, FlutterPlatformView {
             onPerformHitTest(arguments!, result)
             break
         case "updateFaceGeometry":
-            onUpdateFaceGeometry(arguments!)
-            result(nil)
+            onUpdateFaceGeometry(arguments!, result)
             break
         case "getLightEstimate":
             onGetLightEstimate(result)

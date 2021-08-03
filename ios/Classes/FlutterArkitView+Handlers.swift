@@ -130,7 +130,7 @@ extension FlutterArkitView {
         }
     }
     
-    func onUpdateFaceGeometry(_ arguments: Dictionary<String, Any>) {
+    func onUpdateFaceGeometry(_ arguments: Dictionary<String, Any>, _ result:FlutterResult) {
         #if !DISABLE_TRUEDEPTH_API
         guard let name = arguments["name"] as? String,
             let param = arguments["geometry"] as? Dictionary<String, Any>,
@@ -143,13 +143,15 @@ extension FlutterArkitView {
             let geometry = node.geometry as? ARSCNFaceGeometry,
             let anchor = sceneView.session.currentFrame?.anchors.first(where: {$0.identifier.uuidString == fromAnchorId}) as? ARFaceAnchor
         {
-            
             geometry.update(from: anchor.geometry)
+            result(serializeArray(anchor.geometry.vertices))
         } else {
             logPluginError("node not found, geometry was empty, or anchor not found", toChannel: channel)
+            result(nil)
         }
         #else
         logPluginError("TRUEDEPTH_API disabled", toChannel: channel)
+        result(nil)
         #endif
     }
     
