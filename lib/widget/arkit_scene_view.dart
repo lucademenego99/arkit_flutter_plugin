@@ -392,7 +392,7 @@ class ARKitController {
 
     final indices = result[1];
 
-    return List.from(verticesVectors)..addAll(indices);
+    return [verticesVectors, indices];
   }
 
   Future<Vector3?> projectPoint(Vector3 point) async {
