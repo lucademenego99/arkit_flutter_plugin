@@ -380,7 +380,7 @@ class ARKitController {
   /// Updates the geometry with the vertices of a face geometry.
   Future<List<Vector3>> updateFaceGeometry(
       ARKitNode node, String fromAnchorId) async {
-    final result = await (_channel.invokeMethod<void>(
+    final result = await (_channel.invokeListMethod(
         'updateFaceGeometry',
         _getHandlerParams(node, 'geometry', <String, dynamic>{
           'fromAnchorId': fromAnchorId
