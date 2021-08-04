@@ -144,10 +144,11 @@ extension FlutterArkitView {
             let anchor = sceneView.session.currentFrame?.anchors.first(where: {$0.identifier.uuidString == fromAnchorId}) as? ARFaceAnchor
         {
             geometry.update(from: anchor.geometry)
-            let resultArray = [Array<Float>]()
+            var resultArray = [Array<Float>]()
             for vert in anchor.geometry.vertices {
-                resultArray.append(serializeVector(vert))
+                resultArray.append(serializeArray(vert))
             }
+            // anchor.geometry.triangleIndices
             result(resultArray)
         } else {
             logPluginError("node not found, geometry was empty, or anchor not found", toChannel: channel)
