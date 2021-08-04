@@ -148,15 +148,14 @@ extension FlutterArkitView {
             for vert in anchor.geometry.vertices {
                 resultArray.append(serializeArray(vert))
             }
-            // anchor.geometry.triangleIndices
-            result(resultArray)
+            result([resultArray, anchor.geometry.triangleIndices])
         } else {
             logPluginError("node not found, geometry was empty, or anchor not found", toChannel: channel)
-            result([])
+            result(nil)
         }
         #else
         logPluginError("TRUEDEPTH_API disabled", toChannel: channel)
-        result([])
+        result(nil)
         #endif
     }
     
