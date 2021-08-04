@@ -378,6 +378,9 @@ class ARKitController {
   }
 
   /// Updates the geometry with the vertices of a face geometry.
+  /// Returns an array with:
+  /// - at position 0 all vertices of the geometry
+  /// - at position 1 all triangles' indices of the geometry
   Future<List<dynamic>> updateFaceGeometry(
       ARKitNode node, String fromAnchorId) async {
     final result = await (_channel.invokeListMethod(
@@ -385,14 +388,17 @@ class ARKitController {
         _getHandlerParams(node, 'geometry', <String, dynamic>{
           'fromAnchorId': fromAnchorId
         })) as FutureOr<List<dynamic>>);
-    final vertices = result[0];
-    final typedVertices = vertices.map((e) => List<double>.from(e));
-    final verticesVectors =
-        typedVertices.map((e) => _vector3Converter.fromJson(e)).toList();
+    if (result != null) {
+      final vertices = result[0];
+      final typedVertices = vertices.map((e) => List<double>.from(e));
+      final verticesVectors =
+          typedVertices.map((e) => _vector3Converter.fromJson(e)).toList();
 
-    final indices = result[1];
+      final indices = result[1];
 
-    return [verticesVectors, indices];
+      return [verticesVectors, indices];
+    }
+    return [];
   }
 
   Future<Vector3?> projectPoint(Vector3 point) async {
