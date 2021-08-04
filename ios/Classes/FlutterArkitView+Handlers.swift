@@ -152,11 +152,11 @@ extension FlutterArkitView {
             result(resultArray)
         } else {
             logPluginError("node not found, geometry was empty, or anchor not found", toChannel: channel)
-            result(nil)
+            result([])
         }
         #else
         logPluginError("TRUEDEPTH_API disabled", toChannel: channel)
-        result(nil)
+        result([])
         #endif
     }
     
