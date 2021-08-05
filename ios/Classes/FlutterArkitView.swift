@@ -110,6 +110,9 @@ class FlutterArkitView: NSObject, FlutterPlatformView {
         case "getViewportSize":
             onGetViewportSize(result)
             break
+        case "getCameraFOV":
+            onGetCameraFOV(result)
+            break;
         default:
             result(FlutterMethodNotImplemented)
             break

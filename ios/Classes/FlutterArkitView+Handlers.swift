@@ -1,4 +1,5 @@
 import ARKit
+import ModelIO
 
 extension FlutterArkitView {
     func onAddNode(_ arguments: Dictionary<String, Any>) {
@@ -262,5 +263,9 @@ extension FlutterArkitView {
 
     func onGetViewportSize(_ result:FlutterResult) {
         result([sceneView.bounds.size.width, sceneView.bounds.size.height])
+    }
+
+    func onGetCameraFOV(_ result:FlutterResult) {
+        result(MDLCamera().focalLength)
     }
 }
