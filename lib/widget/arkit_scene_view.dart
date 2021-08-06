@@ -313,9 +313,8 @@ class ARKitController {
     _channel.invokeMethod<void>('dispose');
   }
 
-  Future<void> add(ARKitNode node, {String? parentNodeName, bool? fillMesh}) {
-    final params = _addParentNodeNameAndFillMeshToParams(
-        node.toMap(), parentNodeName, fillMesh);
+  Future<void> add(ARKitNode node, {String? parentNodeName}) {
+    final params = _addParentNodeNameToParams(node.toMap(), parentNodeName);
     _subsribeToChanges(node);
     return _channel.invokeMethod('addARKitNode', params);
   }
@@ -363,8 +362,7 @@ class ARKitController {
 
   /// Return list of 2 Vector3 elements, where first element - min value, last element - max value.
   Future<List<Vector3>> getNodeBoundingBox(ARKitNode node) async {
-    final params =
-        _addParentNodeNameAndFillMeshToParams(node.toMap(), null, null);
+    final params = _addParentNodeNameToParams(node.toMap(), null);
     final result = await (_channel.invokeListMethod(
         'getNodeBoundingBox', params) as FutureOr<List<dynamic>>);
     final typed = result.map((e) => List<double>.from(e));
@@ -448,13 +446,10 @@ class ARKitController {
     });
   }
 
-  Map<String, dynamic> _addParentNodeNameAndFillMeshToParams(
-      Map geometryMap, String? parentNodeName, bool? fillMesh) {
+  Map<String, dynamic> _addParentNodeNameToParams(
+      Map geometryMap, String? parentNodeName) {
     if (parentNodeName?.isNotEmpty ?? false) {
       geometryMap['parentNodeName'] = parentNodeName;
-    }
-    if (fillMesh != null) {
-      geometryMap['fillMesh'] = fillMesh;
     }
     return geometryMap as Map<String, dynamic>;
   }

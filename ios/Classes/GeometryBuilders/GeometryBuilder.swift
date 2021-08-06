@@ -42,7 +42,7 @@ func createGeometry(_ arguments: Dictionary<String, Any>?, withDevice device: MT
       break
     case "ARKitFace":
       #if !DISABLE_TRUEDEPTH_API
-      geometry = createFace(arguments, device)
+      geometry = createFace(device)
       #else
       // error
       #endif
