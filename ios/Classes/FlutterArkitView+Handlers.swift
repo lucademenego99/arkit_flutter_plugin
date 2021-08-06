@@ -264,8 +264,4 @@ extension FlutterArkitView {
     func onGetViewportSize(_ result:FlutterResult) {
         result([sceneView.bounds.size.width, sceneView.bounds.size.height])
     }
-
-    func onGetCameraFOV(_ result:FlutterResult) {
-        result(MDLCamera().focalLength)
-    }
 }
