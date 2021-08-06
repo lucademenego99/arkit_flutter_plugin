@@ -84,8 +84,8 @@ func createCapsule(_ arguments: Dictionary<String, Any>) -> SCNCapsule {
 #if !DISABLE_TRUEDEPTH_API
 func createFace(_ arguments: Dictionary<String, Any>, _ device: MTLDevice?) -> ARSCNFaceGeometry {
     if let fillMesh = arguments["fillMesh"] as? Bool {
-        return ARSCNFaceGeometry(device: device!, fillMesh: fillMesh)!
+        return ARSCNFaceGeometry(device: device!, fillMesh: true)!
     }
-    return ARSCNFaceGeometry(device: device!)!
+    return ARSCNFaceGeometry(device: device!, fillMesh: true)!
 }
 #endif
