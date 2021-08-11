@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:ffi';
 import 'dart:typed_data';
 import 'package:arkit_plugin/arkit_node.dart';
 import 'package:arkit_plugin/geometries/material/arkit_material.dart';
