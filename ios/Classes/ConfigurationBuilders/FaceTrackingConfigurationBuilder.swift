@@ -5,8 +5,12 @@ import ARKit
 func createFaceTrackingConfiguration(_ arguments: Dictionary<String, Any>) -> ARFaceTrackingConfiguration? {
     if(ARFaceTrackingConfiguration.isSupported) {
         let config = ARFaceTrackingConfiguration()
+        NSLog(@"Size of default arfacetrackingconf is %@",NSStringFromCGSize(config.videoFormat.imageResolution))
         for videoFormat in ARFaceTrackingConfiguration.supportedVideoFormats {
-            if videoFormat.captureDeviceType == .builtInUltraWideCamera {
+            NSLog(@"Another videoformat: %@",NSStringFromCGSize(videoFormat.imageResolution))
+        }
+        for videoFormat in ARFaceTrackingConfiguration.supportedVideoFormats {
+            if videoFormat.captureDeviceType == .builtInTrueDepthCamera {
                 config.videoFormat = videoFormat
                 break
             }
