@@ -5,13 +5,15 @@ import ARKit
 func createFaceTrackingConfiguration(_ arguments: Dictionary<String, Any>) -> ARFaceTrackingConfiguration? {
     if(ARFaceTrackingConfiguration.isSupported) {
         let config = ARFaceTrackingConfiguration()
-        for videoFormat in ARFaceTrackingConfiguration.supportedVideoFormats {
-            if videoFormat.captureDeviceType == .builtInUltraWideCamera {
-                config.videoFormat = videoFormat
-                break
+        if #available(iOS 14.5, *) {
+            for videoFormat in ARFaceTrackingConfiguration.supportedVideoFormats {
+                if videoFormat.captureDeviceType == .builtInUltraWideCamera {
+                    config.videoFormat = videoFormat
+                    break
+                }
             }
         }
-        return ARFaceTrackingConfiguration()
+        return config
     }
     return nil
 }
