@@ -756,4 +756,11 @@ class ARKitController {
         as FutureOr<double>);
     return result;
   }
+
+  Future<double> getCameraRealHorizontalFOV() async {
+    final result =
+        await (_channel.invokeMethod<double>('getCameraRealHorizontalFOV')
+            as FutureOr<double>);
+    return result;
+  }
 }
