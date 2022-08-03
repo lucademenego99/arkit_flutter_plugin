@@ -119,6 +119,13 @@ class FlutterArkitView: NSObject, FlutterPlatformView {
             let yScale = projection[1,1] // = 1/tan(fovy/2)
             result(2 * atan(1/yScale) * 180/Float.pi)
             break;
+        case "getCameraRealFOV":
+            // FOV calculated based on the section "Projection Matrix" available at
+            // https://stackoverflow.com/questions/47536580/get-camera-field-of-view-in-ios-11-arkit
+            let projection = self.sceneView.session.currentFrame!.camera.projectionMatrix
+            let yScale = projection[1,1] // = 1/tan(fovy/2)
+            result(2 * atan(1/yScale) * 180/Float.pi)
+            break;
         default:
             result(FlutterMethodNotImplemented)
             break
