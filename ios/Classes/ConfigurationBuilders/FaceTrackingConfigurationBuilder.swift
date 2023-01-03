@@ -5,9 +5,9 @@ import ARKit
 func createFaceTrackingConfiguration(_ arguments: Dictionary<String, Any>) -> ARFaceTrackingConfiguration? {
     if(ARFaceTrackingConfiguration.isSupported) {
         let config = ARFaceTrackingConfiguration()
-        if #available(iOS 15.4, *) {
+        if #available(iOS 14.5, *) {
             for videoFormat in ARFaceTrackingConfiguration.supportedVideoFormats {
-                if videoFormat.captureDeviceType == .builtInLiDARDepthCamera {
+                if videoFormat.captureDeviceType == .builtInUltraWideCamera {
                     config.videoFormat = videoFormat
                     break
                 }
