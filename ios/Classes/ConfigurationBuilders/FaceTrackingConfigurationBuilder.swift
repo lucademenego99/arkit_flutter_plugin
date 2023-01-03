@@ -7,7 +7,7 @@ func createFaceTrackingConfiguration(_ arguments: Dictionary<String, Any>) -> AR
         let config = ARFaceTrackingConfiguration()
         if #available(iOS 14.5, *) {
             for videoFormat in ARFaceTrackingConfiguration.supportedVideoFormats {
-                if videoFormat.captureDeviceType == .builtInUltraWideCamera {
+                if videoFormat.captureDeviceType == .builtInLiDARDepthCamera {
                     config.videoFormat = videoFormat
                     break
                 }
