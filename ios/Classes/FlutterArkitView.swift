@@ -134,6 +134,9 @@ class FlutterArkitView: NSObject, FlutterPlatformView {
             let yScale = projection[1,1] // = 1/tan(fovy/2)
             result((2 * atan(1/yScale) * 180/Float.pi) * (Float(imageResolution.width / imageResolution.height)))
             break;
+        case "pause":
+            sceneView.session.pause()
+            break;
         default:
             result(FlutterMethodNotImplemented)
             break

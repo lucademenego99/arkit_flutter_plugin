@@ -312,6 +312,10 @@ class ARKitController {
     _channel.invokeMethod<void>('dispose');
   }
 
+  void pause() {
+    _channel.invokeMethod<void>('pause');
+  }
+
   Future<void> add(ARKitNode node, {String? parentNodeName}) {
     final params = _addParentNodeNameToParams(node.toMap(), parentNodeName);
     _subsribeToChanges(node);
