@@ -316,6 +316,29 @@ class ARKitController {
     _channel.invokeMethod<void>('pause');
   }
 
+  void resume() {
+    _channel.invokeMethod<void>('resume', {
+      'configuration': widget.configuration.index,
+      'environmentTexturing': widget.environmentTexturing.index,
+      'showStatistics': widget.showStatistics,
+      'autoenablesDefaultLighting': widget.autoenablesDefaultLighting,
+      'enableTapRecognizer': widget.enableTapRecognizer,
+      'enablePinchRecognizer': widget.enablePinchRecognizer,
+      'enablePanRecognizer': widget.enablePanRecognizer,
+      'enableRotationRecognizer': widget.enableRotationRecognizer,
+      'planeDetection': widget.planeDetection.index,
+      'showFeaturePoints': widget.showFeaturePoints,
+      'showWorldOrigin': widget.showWorldOrigin,
+      'detectionImagesGroupName': widget.detectionImagesGroupName,
+      'detectionImages': widget.detectionImages?.map((i) => i.toJson()).toList(),
+      'trackingImagesGroupName': widget.trackingImagesGroupName,
+      'trackingImages': widget.trackingImages?.map((i) => i.toJson()).toList(),
+      'forceUserTapOnCenter': widget.forceUserTapOnCenter,
+      'worldAlignment': widget.worldAlignment.index,
+      'maximumNumberOfTrackedImages': widget.maximumNumberOfTrackedImages,
+    });
+  }
+
   Future<void> add(ARKitNode node, {String? parentNodeName}) {
     final params = _addParentNodeNameToParams(node.toMap(), parentNodeName);
     _subsribeToChanges(node);
