@@ -139,7 +139,9 @@ class FlutterArkitView: NSObject, FlutterPlatformView {
             result(nil)
             break;
         case "resume":
-            sceneView.session.run(CustomConfiguration.conf)
+            if let arConfiguration = CustomConfiguration.conf {
+                sceneView.session.run(arConfiguration)
+            }
             result(nil)
             break
         default:
