@@ -138,6 +138,9 @@ class FlutterArkitView: NSObject, FlutterPlatformView {
             sceneView.session.pause()
             result(nil)
             break;
+        case "resume":
+            sceneView.session.run(CustomConfiguration.conf)
+            break
         default:
             result(FlutterMethodNotImplemented)
             break
