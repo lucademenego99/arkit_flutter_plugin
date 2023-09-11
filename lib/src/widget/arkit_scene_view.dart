@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:typed_data';
 import 'package:arkit_plugin/src/arkit_node.dart';
 import 'package:arkit_plugin/src/enums/coaching_overlay_goal.dart';
 import 'package:arkit_plugin/src/geometries/material/arkit_material.dart';

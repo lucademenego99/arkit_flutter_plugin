@@ -1,3 +1,4 @@
+import 'dart:typed_data';
 import 'dart:ui';
 
 import 'package:arkit_plugin/src/geometries/arkit_anchor.dart';
