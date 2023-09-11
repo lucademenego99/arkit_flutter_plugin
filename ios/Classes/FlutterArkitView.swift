@@ -21,7 +21,7 @@ class FlutterArkitView: NSObject, FlutterPlatformView {
     
     func view() -> UIView { return sceneView }
     
-    func onMethodCalled(_ call :FlutterMethodCall, _ result:FlutterResult) {
+    func onMethodCalled(_ call: FlutterMethodCall, _ result: FlutterResult) {
         let arguments = call.arguments as? Dictionary<String, Any>
         
         if configuration == nil && call.method != "init" {
@@ -49,6 +49,18 @@ class FlutterArkitView: NSObject, FlutterPlatformView {
             break
         case "removeARKitAnchor":
             onRemoveAnchor(arguments!)
+            result(nil)
+            break
+        case "addCoachingOverlay":
+            if #available(iOS 13.0, *) {
+              addCoachingOverlay(arguments!)
+            }
+            result(nil)
+            break
+        case "removeCoachingOverlay":
+            if #available(iOS 13.0, *) {
+              removeCoachingOverlay()
+            }
             result(nil)
             break
         case "getNodeBoundingBox":
@@ -143,6 +155,8 @@ class FlutterArkitView: NSObject, FlutterPlatformView {
                 sceneView.session.run(arConfiguration)
             }
             result(nil)
+        case "cameraPosition":
+            onGetCameraPosition(result)
             break
         default:
             result(FlutterMethodNotImplemented)
@@ -150,7 +164,7 @@ class FlutterArkitView: NSObject, FlutterPlatformView {
         }
     }
     
-    func onDispose(_ result:FlutterResult) {
+    func onDispose(_ result: FlutterResult) {
         sceneView.session.pause()
         self.channel.setMethodCallHandler(nil)
         result(nil)

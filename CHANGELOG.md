@@ -1,5 +1,29 @@
 # Changelog
 
+## 1.0.6
+
+* Add positions for each point in the face mesh (by @niverovskiinn)
+* Add cameraPosition function (by @alegos27)
+* Update dependencies
+* Migrate to new linter, apply fixes
+
+## 1.0.5
+
+* Fix Face detection and Body tracking deserialization errors
+* Add `ARKitSkeletonJointName` and helper methods for `ARKitSkeleton`
+* Add Body tracking sample
+
+## 1.0.4
+
+* Add coaching overlay (by @HadiIOS)
+
+## 1.0.3
+
+* Fix null safety errors (by @daniel-possienke, @ssp)
+* Fix onCameraDidChangeTrackingState (by @dokkaebi)
+* Port example app to null safety
+* Update README
+
 ## 1.0.2
 
 * BREAKING CHANGE! Split ARKitMaterialProperty to separate color, image, value, and video properties

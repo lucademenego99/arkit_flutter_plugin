@@ -10,14 +10,14 @@ class ImageDetectionPage extends StatefulWidget {
 }
 
 class _ImageDetectionPageState extends State<ImageDetectionPage> {
-  ARKitController arkitController;
-  Timer timer;
+  late ARKitController arkitController;
+  Timer? timer;
   bool anchorWasFound = false;
 
   @override
   void dispose() {
     timer?.cancel();
-    arkitController?.dispose();
+    arkitController.dispose();
     super.dispose();
   }
 
@@ -40,8 +40,8 @@ class _ImageDetectionPageState extends State<ImageDetectionPage> {
                         'Point the camera at the earth image from the article about Earth on Wikipedia.',
                         style: Theme.of(context)
                             .textTheme
-                            .headline5
-                            .copyWith(color: Colors.white),
+                            .headlineSmall
+                            ?.copyWith(color: Colors.white),
                       ),
                     ),
             ],
