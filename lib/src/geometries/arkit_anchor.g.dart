@@ -84,18 +84,18 @@ Map<String, dynamic> _$ARKitImageAnchorToJson(ARKitImageAnchor instance) {
 }
 
 ARKitFaceAnchor _$ARKitFaceAnchorFromJson(Map json) => ARKitFaceAnchor(
-      ARKitFace.fromJson(json['geometry'] as Map),
-      (json['blendShapes'] as Map).map(
-        (k, e) => MapEntry(k as String, (e as num).toDouble()),
-      ),
-      json['isTracked'] as bool,
-      json['nodeName'] as String?,
-      json['identifier'] as String,
-      const MatrixConverter().fromJson(json['transform'] as List),
-      const MatrixConverter().fromJson(json['leftEyeTransform'] as List),
-      const MatrixConverter().fromJson(json['rightEyeTransform'] as List),
-      const Vector3ListConverter().fromJson(json['geometryVertices'] as List),
-    );
+    ARKitFace.fromJson(json['geometry'] as Map),
+    (json['blendShapes'] as Map).map(
+      (k, e) => MapEntry(k as String, (e as num).toDouble()),
+    ),
+    json['isTracked'] as bool,
+    json['nodeName'] as String?,
+    json['identifier'] as String,
+    const MatrixConverter().fromJson(json['transform'] as List),
+    const MatrixConverter().fromJson(json['leftEyeTransform'] as List),
+    const MatrixConverter().fromJson(json['rightEyeTransform'] as List),
+    const Vector3ListConverter().fromJson(json['geometryVertices'] as List),
+    json['geometryIndices'] as List<int>);
 
 Map<String, dynamic> _$ARKitFaceAnchorToJson(ARKitFaceAnchor instance) {
   final val = <String, dynamic>{};
@@ -116,6 +116,7 @@ Map<String, dynamic> _$ARKitFaceAnchorToJson(ARKitFaceAnchor instance) {
       const MatrixConverter().toJson(instance.rightEyeTransform);
   val['geometryVertices'] =
       const Vector3ListConverter().toJson(instance.geometryVertices);
+  val['geometryIndices'] = instance.geometryIndices;
   val['blendShapes'] = instance.blendShapes;
   val['isTracked'] = instance.isTracked;
   return val;

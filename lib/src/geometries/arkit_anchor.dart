@@ -135,16 +135,17 @@ class ARKitImageAnchor extends ARKitAnchor {
 @JsonSerializable()
 class ARKitFaceAnchor extends ARKitAnchor {
   const ARKitFaceAnchor(
-    this.geometry,
-    this.blendShapes,
-    this.isTracked,
-    String? nodeName,
-    String identifier,
-    Matrix4 transform,
-    this.leftEyeTransform,
-    this.rightEyeTransform,
-    this.geometryVertices,
-  ) : super(
+      this.geometry,
+      this.blendShapes,
+      this.isTracked,
+      String? nodeName,
+      String identifier,
+      Matrix4 transform,
+      this.leftEyeTransform,
+      this.rightEyeTransform,
+      this.geometryVertices,
+      this.geometryIndices)
+      : super(
           nodeName,
           identifier,
           transform,
@@ -164,6 +165,9 @@ class ARKitFaceAnchor extends ARKitAnchor {
   /// An array of vertex positions for each point in the face mesh.
   @Vector3ListConverter()
   final List<Vector3> geometryVertices;
+
+  /// An array of indices describing the triangle mesh formed by the face geometry's vertex data
+  final List<int> geometryIndices;
 
   /// A dictionary of blend shape coefficients for each blend shape location.
   /// Blend shapes coefficients define the amount of displacement of a neutral shape at a specific location on the face.
