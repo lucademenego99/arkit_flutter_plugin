@@ -143,8 +143,7 @@ class ARKitFaceAnchor extends ARKitAnchor {
       Matrix4 transform,
       this.leftEyeTransform,
       this.rightEyeTransform,
-      this.geometryVertices,
-      this.geometryIndices)
+      this.geometryVertices)
       : super(
           nodeName,
           identifier,
@@ -165,9 +164,6 @@ class ARKitFaceAnchor extends ARKitAnchor {
   /// An array of vertex positions for each point in the face mesh.
   @Vector3ListConverter()
   final List<Vector3> geometryVertices;
-
-  /// An array of indices describing the triangle mesh formed by the face geometry's vertex data
-  final List<int> geometryIndices;
 
   /// A dictionary of blend shape coefficients for each blend shape location.
   /// Blend shapes coefficients define the amount of displacement of a neutral shape at a specific location on the face.
