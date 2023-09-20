@@ -395,7 +395,7 @@ class ARKitController {
   /// Updates the geometry with the vertices of a face geometry.
   void updateFaceGeometry(ARKitNode node, String fromAnchorId) {
     _channel.invokeMethod<void>(
-        'updateFaceGeometry'
+        'updateFaceGeometry',
         _getHandlerParams(
             node, 'geometry', <String, dynamic>{'fromAnchorId': fromAnchorId}));
   }
