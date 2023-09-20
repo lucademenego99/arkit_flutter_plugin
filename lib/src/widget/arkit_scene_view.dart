@@ -395,7 +395,7 @@ class ARKitController {
   /// Updates the geometry with the vertices of a face geometry.
   void updateFaceGeometry(ARKitNode node, String fromAnchorId) {
     _channel.invokeMethod<void>(
-        'updateFaceGeometry',
+        'updateFaceGeometry'
         _getHandlerParams(
             node, 'geometry', <String, dynamic>{'fromAnchorId': fromAnchorId}));
   }
@@ -765,22 +765,22 @@ class ARKitController {
     return size;
   }
 
-  Future<double> getCameraFOV() async {
+  Future<double?> getCameraFOV() async {
     final result = await (_channel.invokeMethod<double>('getCameraFOV')
-        as FutureOr<double>);
+        as FutureOr<double?>);
     return result;
   }
 
-  Future<double> getCameraRealFOV() async {
+  Future<double?> getCameraRealFOV() async {
     final result = await (_channel.invokeMethod<double>('getCameraRealFOV')
-        as FutureOr<double>);
+        as FutureOr<double?>);
     return result;
   }
 
-  Future<double> getCameraRealHorizontalFOV() async {
+  Future<double?> getCameraRealHorizontalFOV() async {
     final result =
         await (_channel.invokeMethod<double>('getCameraRealHorizontalFOV')
-            as FutureOr<double>);
+            as FutureOr<double?>);
     return result;
   }
 }
