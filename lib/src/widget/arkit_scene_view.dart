@@ -761,6 +761,9 @@ class ARKitController {
   Future<List<double>> getViewportSize() async {
     final result = await (_channel.invokeListMethod('getViewportSize')
         as Future<List<dynamic>?>);
+    if (result == null) {
+      return [];
+    }
     final size = result.map((i) => i as double).toList();
     return size;
   }
