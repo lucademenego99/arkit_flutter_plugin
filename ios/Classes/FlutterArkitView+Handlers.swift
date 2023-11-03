@@ -216,10 +216,6 @@ extension FlutterArkitView {
       logPluginError("deserialization failed", toChannel: channel)
       return
     }
-
-    func onGetViewportSize(_ result:FlutterResult) {
-        result([sceneView.bounds.size.width, sceneView.bounds.size.height])
-    }
     
     if let sceneUrl = Bundle.main.url(forResource: sceneName, withExtension: "dae"),
        let sceneSource = SCNSceneSource(url: sceneUrl, options: nil),
@@ -233,7 +229,7 @@ extension FlutterArkitView {
       logPluginError("animation failed", toChannel: channel)
     }
   }
-  
+
   func onStopAnimation(_ arguments: [String: Any]) {
     guard let key = arguments["key"] as? String else {
       logPluginError("deserialization failed", toChannel: channel)
@@ -270,4 +266,19 @@ extension FlutterArkitView {
       result(nil)
     }
   }
+
+  func onGetViewportSize(_ result:FlutterResult) {
+      result([sceneView.bounds.size.width, sceneView.bounds.size.height])
+  }
+  
+  func onGetCameraPosition(_ result: FlutterResult) {
+    if let frame: ARFrame = sceneView.session.currentFrame {
+      let cameraPosition = frame.camera.transform.columns.3
+      let res = serializeArray(cameraPosition)
+      result(res)
+    } else {
+      result(nil)
+    }
+  }
 }
+
