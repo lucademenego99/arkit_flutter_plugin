@@ -1,5 +1,5 @@
-import Foundation
 import ARKit
+import Foundation
 
 #if !DISABLE_TRUEDEPTH_API
 func createFaceTrackingConfiguration(_ arguments: Dictionary<String, Any>) -> ARFaceTrackingConfiguration? {
