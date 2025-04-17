@@ -1,8 +1,9 @@
 import 'package:arkit_plugin_example/body_tracking_page.dart';
-import 'package:arkit_plugin_example/camera_position_scene.dart';
+import 'package:arkit_plugin_example/camera_properties_page.dart';
 import 'package:arkit_plugin_example/check_support_page.dart';
 import 'package:arkit_plugin_example/custom_animation_page.dart';
 import 'package:arkit_plugin_example/custom_object_page.dart';
+import 'package:arkit_plugin_example/load_gltf_or_glb_page.dart';
 import 'package:arkit_plugin_example/distance_tracking_page.dart';
 import 'package:arkit_plugin_example/custom_light_page.dart';
 import 'package:arkit_plugin_example/earth_page.dart';
@@ -16,6 +17,7 @@ import 'package:arkit_plugin_example/network_image_detection.dart';
 import 'package:arkit_plugin_example/occlusion_page.dart';
 import 'package:arkit_plugin_example/physics_page.dart';
 import 'package:arkit_plugin_example/plane_detection_page.dart';
+import 'package:arkit_plugin_example/snapshot_depth_scene.dart';
 import 'package:arkit_plugin_example/snapshot_scene.dart';
 import 'package:arkit_plugin_example/tap_page.dart';
 import 'package:arkit_plugin_example/face_detection_page.dart';
@@ -130,6 +132,13 @@ class MyApp extends StatelessWidget {
             .push<void>(MaterialPageRoute(builder: (c) => CustomObjectPage())),
       ),
       Sample(
+        'Load .gltf or .glb',
+        'Load .gltf or .glb from the Flutter assets or the Documents folder',
+        Icons.folder_copy,
+        () => Navigator.of(context).push<void>(
+            MaterialPageRoute(builder: (c) => LoadGltfOrGlbFilePage())),
+      ),
+      Sample(
         'Occlusion',
         'Spheres which are not visible after horizontal and vertical planes.',
         Icons.blur_circular,
@@ -200,11 +209,18 @@ class MyApp extends StatelessWidget {
             .push<void>(MaterialPageRoute(builder: (c) => SnapshotScenePage())),
       ),
       Sample(
-        'Camera position',
-        'Get position of the camera in AR scene',
+        'Camera properties',
+        'Shows position, Intrinsic, and resolution of the camera',
         Icons.location_on,
-            () => Navigator.of(context)
-            .push<void>(MaterialPageRoute(builder: (c) => CameraPositionScenePage())),
+        () => Navigator.of(context).push<void>(
+            MaterialPageRoute(builder: (c) => CameraPropertiesPage())),
+      ),
+      Sample(
+        'Depth Scene Snapshot',
+        'Make a photo of the depth scene using LiDAR',
+        Icons.camera,
+        () => Navigator.of(context).push<void>(
+            MaterialPageRoute(builder: (c) => SnapshotDepthScenePage())),
       ),
     ];
 

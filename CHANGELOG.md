@@ -1,5 +1,30 @@
 # Changelog
 
+## 1.1.3
+
+* Update onGetNodeBoundingBox to use the actual node instead of a new geometry. This allows you to get the bounding box of a loaded model (by @jeremyfb)
+* Update handleTap to find if the tapped node is a child of an SCNReferenceNode and return the name of that instead. This fixes a bug where the names of inner geometries were being returned. (by @jeremyfb)
+
+## 1.1.2
+
+* Allow to capture snapshot of depth scene using LiDAR to get a depth image and associated information (by @biklas7)
+
+## 1.1.1
+
+* Update README (by @biklas7)
+
+## 1.1.0
+
+* BREAKING CHANGE! Drop iOS 11 support.
+* BREAKING CHANGE! Update Flutter constraints to >=3.19.0 and Dart to >=3.3.0 <4.0.0
+* Add `getIntrinsics` and `getImageResolution` functions (by @Oct7)
+
+## 1.0.7
+
+* Add .gltf and .glb support (by @Jaemin-VIRNECT)
+* Fix "The 'arkit_0' channel sent a message from native to Flutter on a non-platform thread"
+* Cleanup swift code
+
 ## 1.0.6
 
 * Add positions for each point in the face mesh (by @niverovskiinn)

@@ -1,8 +1,8 @@
-import Foundation
 import ARKit
+import Foundation
 
 #if !DISABLE_TRUEDEPTH_API
-func createFaceTrackingConfiguration(_ arguments: Dictionary<String, Any>) -> ARFaceTrackingConfiguration? {
+func createFaceTrackingConfiguration(_: [String: Any]) -> ARFaceTrackingConfiguration? {
     if(ARFaceTrackingConfiguration.isSupported) {
         let config = ARFaceTrackingConfiguration()
         config.isLightEstimationEnabled = false  // Set light estimation to false explicitly

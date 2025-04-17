@@ -45,7 +45,7 @@ typedef ARKitPinchGestureHandler = void Function(
 /// A widget that wraps ARSCNView from ARKit.
 class ARKitSceneView extends StatefulWidget {
   const ARKitSceneView({
-    Key? key,
+    super.key,
     required this.onARKitViewCreated,
     this.configuration = ARKitConfiguration.worldTracking,
     this.environmentTexturing =
@@ -67,7 +67,7 @@ class ARKitSceneView extends StatefulWidget {
     this.worldAlignment = ARWorldAlignment.gravity,
     this.maximumNumberOfTrackedImages = 0,
     this.debug = false,
-  }) : super(key: key);
+  });
 
   /// This function will be fired when ARKit view is created.
   final ARKitPluginCreatedCallback onARKitViewCreated;
@@ -309,8 +309,10 @@ class ARKitController {
 
   static const _boolConverter = ValueNotifierConverter();
   static const _vector3Converter = Vector3Converter();
+  static const _vector2Converter = Vector2Converter();
   static const _matrixValueNotifierConverter = MatrixValueNotifierConverter();
   static const _matrixConverter = MatrixConverter();
+  static const _matrix3Converter = Matrix3Converter();
   static const _materialsConverter = ListMaterialsValueNotifierConverter();
   static const _stateConverter = ARTrackingStateConverter();
   static const _stateReasonConverter = ARTrackingStateReasonConverter();
@@ -578,34 +580,34 @@ class ARKitController {
     if (node.geometry != null) {
       node.geometry!.materials.addListener(() => _updateMaterials(node));
       switch (node.geometry.runtimeType) {
-        case ARKitPlane:
+        case ARKitPlane _:
           _subscribeToPlaneGeometry(node);
           break;
-        case ARKitSphere:
+        case ARKitSphere _:
           _subscribeToSphereGeometry(node);
           break;
-        case ARKitText:
+        case ARKitText _:
           _subscribeToTextGeometry(node);
           break;
-        case ARKitBox:
+        case ARKitBox _:
           _subscribeToBoxGeometry(node);
           break;
-        case ARKitCylinder:
+        case ARKitCylinder _:
           _subscribeToCylinderGeometry(node);
           break;
-        case ARKitCone:
+        case ARKitCone _:
           _subscribeToConeGeometry(node);
           break;
-        case ARKitPyramid:
+        case ARKitPyramid _:
           _subscribeToPyramidGeometry(node);
           break;
-        case ARKitTube:
+        case ARKitTube _:
           _subscribeToTubeGeometry(node);
           break;
-        case ARKitTorus:
+        case ARKitTorus _:
           _subscribeToTorusGeometry(node);
           break;
-        case ARKitCapsule:
+        case ARKitCapsule _:
           _subscribeToCapsuleGeometry(node);
           break;
       }
@@ -744,9 +746,48 @@ class ARKitController {
     return vector3;
   }
 
+  Future<Size> getCameraImageResolution() async {
+    final result = await _channel.invokeListMethod('cameraImageResolution');
+    final vector2 = _vector2Converter.fromJson(result!);
+    return Size(vector2.x, vector2.y);
+  }
+
+  Future<Matrix3> getCameraIntrinsics() async {
+    final result = await _channel.invokeListMethod('cameraIntrinsics');
+    final matrix3 = _matrix3Converter.fromJson(result!);
+    return matrix3;
+  }
+
   Future<ImageProvider> snapshot() async {
     final result = await _channel.invokeMethod<Uint8List>('snapshot');
     return MemoryImage(result!);
+  }
+
+  Future<ImageProvider> getCapturedImage() async {
+    final result = await _channel.invokeMethod<Uint8List>('capturedImage');
+    return MemoryImage(result!);
+  }
+
+  Future<Map<String, Object>?> snapshotWithDepthData() async {
+    final result = await _channel
+        .invokeMethod<Map<Object?, Object?>>('snapshotWithDepthData');
+    if (result != null) {
+      result.removeWhere((key, value) => key == null || value == null);
+      return result.cast<Object, Object>().map((key, value) {
+        final parsedKey = key as String;
+
+        if (parsedKey == 'image') {
+          final bytesList = (value as List<Object?>).cast<int>().toList();
+          final bytes = Uint8List.fromList(bytesList);
+          final image = MemoryImage(bytes);
+          return MapEntry(parsedKey, image);
+        } else {
+          return MapEntry(parsedKey, value);
+        }
+      });
+    } else {
+      return null;
+    }
   }
 
   Future<Vector3?> cameraPosition() async {

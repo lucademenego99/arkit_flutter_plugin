@@ -1,121 +1,105 @@
-import Foundation
 import ARKit
+import Foundation
 
 class FlutterArkitView: NSObject, FlutterPlatformView {
     let sceneView: ARSCNView
     let channel: FlutterMethodChannel
-    
+
     var forceTapOnCenter: Bool = false
     var configuration: ARConfiguration? = nil
-    
+
     init(withFrame frame: CGRect, viewIdentifier viewId: Int64, messenger msg: FlutterBinaryMessenger) {
-        self.sceneView = ARSCNView(frame: frame)
-        self.sceneView.preferredFramesPerSecond = 30    // Limit FPS to 30: there are heat problems with 60
-        self.channel = FlutterMethodChannel(name: "arkit_\(viewId)", binaryMessenger: msg)
-        
+        sceneView = ARSCNView(frame: frame)
+        sceneView.preferredFramesPerSecond = 30    // Limit FPS to 30: there are heat problems with 60
+        channel = FlutterMethodChannel(name: "arkit_\(viewId)", binaryMessenger: msg)
+
         super.init()
-        
-        self.sceneView.delegate = self
-        self.channel.setMethodCallHandler(self.onMethodCalled)
+
+        sceneView.delegate = self
+        channel.setMethodCallHandler(onMethodCalled)
     }
-    
+
     func view() -> UIView { return sceneView }
-    
+
     func onMethodCalled(_ call: FlutterMethodCall, _ result: FlutterResult) {
-        let arguments = call.arguments as? Dictionary<String, Any>
-        
+        let arguments = call.arguments as? [String: Any]
+
         if configuration == nil && call.method != "init" {
             logPluginError("plugin is not initialized properly", toChannel: channel)
             result(nil)
             return
         }
-        
+
         switch call.method {
         case "init":
             initalize(arguments!, result)
             result(nil)
-            break
         case "addARKitNode":
             onAddNode(arguments!)
             result(nil)
-            break
         case "onUpdateNode":
             onUpdateNode(arguments!)
             result(nil)
-            break
         case "removeARKitNode":
             onRemoveNode(arguments!)
             result(nil)
-            break
         case "removeARKitAnchor":
             onRemoveAnchor(arguments!)
             result(nil)
-            break
         case "addCoachingOverlay":
             if #available(iOS 13.0, *) {
-              addCoachingOverlay(arguments!)
+                addCoachingOverlay(arguments!)
             }
             result(nil)
-            break
         case "removeCoachingOverlay":
             if #available(iOS 13.0, *) {
-              removeCoachingOverlay()
+                removeCoachingOverlay()
             }
             result(nil)
-            break
         case "getNodeBoundingBox":
             onGetNodeBoundingBox(arguments!, result)
-            break
         case "transformationChanged":
             onTransformChanged(arguments!)
             result(nil)
-            break
         case "isHiddenChanged":
             onIsHiddenChanged(arguments!)
             result(nil)
-            break
         case "updateSingleProperty":
             onUpdateSingleProperty(arguments!)
             result(nil)
-            break
         case "updateMaterials":
             onUpdateMaterials(arguments!)
             result(nil)
-            break
         case "performHitTest":
             onPerformHitTest(arguments!, result)
-            break
         case "updateFaceGeometry":
             onUpdateFaceGeometry(arguments!)
-            break
+            result(nil)
         case "getLightEstimate":
             onGetLightEstimate(result)
             result(nil)
-            break
         case "projectPoint":
             onProjectPoint(arguments!, result)
-            break
         case "cameraProjectionMatrix":
             onCameraProjectionMatrix(result)
-            break
         case "pointOfViewTransform":
             onPointOfViewTransform(result)
-            break
         case "playAnimation":
             onPlayAnimation(arguments!)
             result(nil)
-            break
         case "stopAnimation":
             onStopAnimation(arguments!)
             result(nil)
-            break
         case "dispose":
             onDispose(result)
             result(nil)
-            break
         case "cameraEulerAngles":
             onCameraEulerAngles(result)
-            break
+            result(nil)
+        case "cameraIntrinsics":
+            onCameraIntrinsics(result)
+        case "cameraImageResolution":
+            onCameraImageResolution(result)
         case "snapshot":
             onGetSnapshot(result)
             break
@@ -155,18 +139,26 @@ class FlutterArkitView: NSObject, FlutterPlatformView {
                 sceneView.session.run(arConfiguration)
             }
             result(nil)
+        case "capturedImage":
+            onCameraCapturedImage(result)
+        case "snapshotWithDepthData":
+            onGetSnapshotWithDepthData(result)
         case "cameraPosition":
             onGetCameraPosition(result)
-            break
         default:
             result(FlutterMethodNotImplemented)
-            break
         }
     }
-    
+
+    func sendToFlutter(_ method: String, arguments: Any?) {
+        DispatchQueue.main.async {
+            self.channel.invokeMethod(method, arguments: arguments)
+        }
+    }
+
     func onDispose(_ result: FlutterResult) {
         sceneView.session.pause()
-        self.channel.setMethodCallHandler(nil)
+        channel.setMethodCallHandler(nil)
         result(nil)
     }
 }
