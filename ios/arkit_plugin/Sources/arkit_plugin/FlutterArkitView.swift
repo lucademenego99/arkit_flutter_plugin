@@ -1,5 +1,7 @@
 import ARKit
+import Flutter
 import Foundation
+import UIKit
 
 class FlutterArkitView: NSObject, FlutterPlatformView {
     let sceneView: ARSCNView
@@ -7,6 +9,7 @@ class FlutterArkitView: NSObject, FlutterPlatformView {
 
     var forceTapOnCenter: Bool = false
     var configuration: ARConfiguration? = nil
+    var isDisposed: Bool = false
 
     init(withFrame frame: CGRect, viewIdentifier viewId: Int64, messenger msg: FlutterBinaryMessenger) {
         sceneView = ARSCNView(frame: frame)

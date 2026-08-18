@@ -1,5 +1,31 @@
 # Changelog
 
+## 1.5.0
+
+* **BREAKING CHANGE** TrueDepth/face-tracking code is now excluded by default. `DISABLE_TRUEDEPTH_API` is replaced with `ENABLE_TRUEDEPTH_API`. If your app uses face tracking, refer to the README to re-enable it.
+
+## 1.4.0
+
+* _WARNING!_ Under SPM, `DISABLE_TRUEDEPTH_API` is silently ignored — all SPM builds include TrueDepth/face-tracking code, which may cause App Store rejection for apps that don't use face tracking. Upgrade to 1.5.0 to fix this.
+
+* Migrate to Swift Package Manager
+
+## 1.3.0
+
+* BREAKING CHANGE! Make network image loading asynchronous
+* Implement batch processing for image detection when exceeding 100 images (by @vlad0209)
+
+## 1.2.1
+
+* Enhance ARKit initialization by adding onInitialized callback (by @vlad0209)
+* Set correct constraints for vector_math
+
+## 1.2.0
+
+* Prevent UI freeze by loading AR session configuration asynchronously (by @vlad0209)
+* **BREAKING CHANGE** Drop iOS 12 support
+* Fix analyzer warnings
+
 ## 1.1.3
 
 * Update onGetNodeBoundingBox to use the actual node instead of a new geometry. This allows you to get the bounding box of a loaded model (by @jeremyfb)

@@ -1,4 +1,8 @@
 import ARKit
+import Foundation
+import Metal
+import SpriteKit
+import UIKit
 
 func createGeometry(_ arguments: [String: Any]?, withDevice device: MTLDevice?) -> SCNGeometry? {
     if let arguments = arguments {
@@ -29,10 +33,10 @@ func createGeometry(_ arguments: [String: Any]?, withDevice device: MTLDevice?) 
         case "ARKitCapsule":
             geometry = createCapsule(arguments)
         case "ARKitFace":
-            #if !DISABLE_TRUEDEPTH_API
+            #if ENABLE_TRUEDEPTH_API
                 geometry = createFace(device)
             #else
-                // error
+                assertionFailure("Face tracking is not enabled. Add ARKitFaceTrackingEnabled=true to ios/Runner/Info.plist (SPM) or -DENABLE_TRUEDEPTH_API to OTHER_SWIFT_FLAGS (CocoaPods).")
             #endif
         default:
             // error
@@ -68,19 +72,19 @@ private func parseMaterial(_ dict: [String: Any]) -> SCNMaterial {
     material.blendMode = SCNBlendMode(rawValue: dict["blendMode"] as! Int)!
     material.isDoubleSided = dict["doubleSided"] as! Bool
 
-    material.diffuse.contents = parsePropertyContents(dict["diffuse"])
-    material.ambient.contents = parsePropertyContents(dict["ambient"])
-    material.specular.contents = parsePropertyContents(dict["specular"])
-    material.emission.contents = parsePropertyContents(dict["emission"])
-    material.transparent.contents = parsePropertyContents(dict["transparent"])
-    material.reflective.contents = parsePropertyContents(dict["reflective"])
-    material.multiply.contents = parsePropertyContents(dict["multiply"])
-    material.normal.contents = parsePropertyContents(dict["normal"])
-    material.displacement.contents = parsePropertyContents(dict["displacement"])
-    material.ambientOcclusion.contents = parsePropertyContents(dict["ambientOcclusion"])
-    material.selfIllumination.contents = parsePropertyContents(dict["selfIllumination"])
-    material.metalness.contents = parsePropertyContents(dict["metalness"])
-    material.roughness.contents = parsePropertyContents(dict["roughness"])
+    assignMaterialProperty(material.diffuse, from: dict["diffuse"])
+    assignMaterialProperty(material.ambient, from: dict["ambient"])
+    assignMaterialProperty(material.specular, from: dict["specular"])
+    assignMaterialProperty(material.emission, from: dict["emission"])
+    assignMaterialProperty(material.transparent, from: dict["transparent"])
+    assignMaterialProperty(material.reflective, from: dict["reflective"])
+    assignMaterialProperty(material.multiply, from: dict["multiply"])
+    assignMaterialProperty(material.normal, from: dict["normal"])
+    assignMaterialProperty(material.displacement, from: dict["displacement"])
+    assignMaterialProperty(material.ambientOcclusion, from: dict["ambientOcclusion"])
+    assignMaterialProperty(material.selfIllumination, from: dict["selfIllumination"])
+    assignMaterialProperty(material.metalness, from: dict["metalness"])
+    assignMaterialProperty(material.roughness, from: dict["roughness"])
 
     return material
 }
@@ -170,4 +174,31 @@ private func parsePropertyContents(_ dict: Any?) -> Any? {
         return skScene
     }
     return nil
+}
+
+private func assignMaterialProperty(_ property: SCNMaterialProperty, from value: Any?) {
+    guard let dict = value as? [String: Any] else {
+        property.contents = nil
+        return
+    }
+
+    if let imageName = dict["image"] as? String {
+        if let image = getImageByName(imageName) {
+            property.contents = image
+            return
+        }
+        if let url = URL(string: imageName),
+           url.scheme == "http" || url.scheme == "https"
+        {
+            fetchNetworkImageIfNeeded(url) { image in
+                guard let image = image else { return }
+                DispatchQueue.main.async {
+                    property.contents = image
+                }
+            }
+        }
+        return
+    }
+
+    property.contents = parsePropertyContents(dict)
 }
