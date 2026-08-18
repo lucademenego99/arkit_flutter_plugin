@@ -177,6 +177,9 @@ extension FlutterArkitView {
             let res = ["ambientIntensity": lightEstimate.ambientIntensity, "ambientColorTemperature": lightEstimate.ambientColorTemperature]
             result(res)
         } else {
+            if configuration is ARFaceTrackingConfiguration {
+                logPluginError("Light estimate is not available: light estimation is explicitly disabled for face tracking configurations.", toChannel: channel)
+            }
             result(nil)
         }
     }

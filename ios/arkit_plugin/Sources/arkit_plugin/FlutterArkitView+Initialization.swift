@@ -47,16 +47,14 @@ extension FlutterArkitView {
     }
     
     private func runConfiguration(_ arguments: [String: Any], sendInitialized: Bool) {
-        guard !isDisposed else { return }
-        
+        guard !isDisposed, !isPaused else { return }
+
         configuration = parseConfiguration(arguments)
 
         guard let config = configuration else {
             logPluginError("Failed to create ARConfiguration", toChannel: channel)
             return
         }
-
-        CustomConfiguration.conf = config
 
         // Do NOT use .removeExistingAnchors to preserve the world state
         sceneView.session.run(config)

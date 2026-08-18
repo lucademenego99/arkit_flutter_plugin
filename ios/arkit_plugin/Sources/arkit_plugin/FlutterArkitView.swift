@@ -10,6 +10,7 @@ class FlutterArkitView: NSObject, FlutterPlatformView {
     var forceTapOnCenter: Bool = false
     var configuration: ARConfiguration? = nil
     var isDisposed: Bool = false
+    var isPaused: Bool = false
 
     init(withFrame frame: CGRect, viewIdentifier viewId: Int64, messenger msg: FlutterBinaryMessenger) {
         sceneView = ARSCNView(frame: frame)
@@ -147,11 +148,13 @@ class FlutterArkitView: NSObject, FlutterPlatformView {
             result(2 * atan((1 / yScale) * aspectRatio) * 180 / Float.pi)
             break
         case "pause":
+            isPaused = true
             sceneView.session.pause()
             result(nil)
             break
         case "resume":
-            if !isDisposed, let arConfiguration = CustomConfiguration.conf {
+            isPaused = false
+            if !isDisposed, let arConfiguration = configuration {
                 sceneView.session.run(arConfiguration)
             }
             result(nil)
