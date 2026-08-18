@@ -112,33 +112,46 @@ class FlutterArkitView: NSObject, FlutterPlatformView {
         case "getCameraFOV":
             // FOV calculated based on the section "Projection Matrix with Viewport" available at
             // https://stackoverflow.com/questions/47536580/get-camera-field-of-view-in-ios-11-arkit
-            let imageResolution = self.sceneView.session.currentFrame!.camera.imageResolution
+            guard let currentFrame = self.sceneView.session.currentFrame else {
+                result(nil)
+                break
+            }
             let viewSize = self.sceneView.bounds.size
-            let projection = self.sceneView.session.currentFrame!.camera.projectionMatrix(for: .portrait, viewportSize: viewSize, zNear: 1, zFar: 1000)
-            let yScale = projection[1,1] // = 1/tan(fovy/2)
-            result(2 * atan(1/yScale) * 180/Float.pi)
-            break;
+            let orientation = self.sceneView.window?.windowScene?.interfaceOrientation ?? .portrait
+            let projection = currentFrame.camera.projectionMatrix(for: orientation, viewportSize: viewSize, zNear: 1, zFar: 1000)
+            let yScale = projection[1, 1] // = 1/tan(fovy/2)
+            result(2 * atan(1 / yScale) * 180 / Float.pi)
+            break
         case "getCameraRealFOV":
             // FOV calculated based on the section "Projection Matrix" available at
             // https://stackoverflow.com/questions/47536580/get-camera-field-of-view-in-ios-11-arkit
-            let projection = self.sceneView.session.currentFrame!.camera.projectionMatrix
-            let yScale = projection[1,1] // = 1/tan(fovy/2)
-            result(2 * atan(1/yScale) * 180/Float.pi)
-            break;
+            guard let currentFrame = self.sceneView.session.currentFrame else {
+                result(nil)
+                break
+            }
+            let projection = currentFrame.camera.projectionMatrix
+            let yScale = projection[1, 1] // = 1/tan(fovy/2)
+            result(2 * atan(1 / yScale) * 180 / Float.pi)
+            break
         case "getCameraRealHorizontalFOV":
             // FOV calculated based on the section "Projection Matrix" available at
             // https://stackoverflow.com/questions/47536580/get-camera-field-of-view-in-ios-11-arkit
-            let imageResolution = self.sceneView.session.currentFrame!.camera.imageResolution
-            let projection = self.sceneView.session.currentFrame!.camera.projectionMatrix
-            let yScale = projection[1,1] // = 1/tan(fovy/2)
-            result((2 * atan(1/yScale) * 180/Float.pi) * (Float(imageResolution.width / imageResolution.height)))
-            break;
+            guard let currentFrame = self.sceneView.session.currentFrame else {
+                result(nil)
+                break
+            }
+            let imageResolution = currentFrame.camera.imageResolution
+            let projection = currentFrame.camera.projectionMatrix
+            let yScale = projection[1, 1] // = 1/tan(fovy/2)
+            let aspectRatio = Float(imageResolution.width / imageResolution.height)
+            result(2 * atan((1 / yScale) * aspectRatio) * 180 / Float.pi)
+            break
         case "pause":
             sceneView.session.pause()
             result(nil)
-            break;
+            break
         case "resume":
-            if let arConfiguration = CustomConfiguration.conf {
+            if !isDisposed, let arConfiguration = CustomConfiguration.conf {
                 sceneView.session.run(arConfiguration)
             }
             result(nil)
@@ -160,6 +173,7 @@ class FlutterArkitView: NSObject, FlutterPlatformView {
     }
 
     func onDispose(_ result: FlutterResult) {
+        isDisposed = true
         sceneView.session.pause()
         channel.setMethodCallHandler(nil)
         result(nil)
